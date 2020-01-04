@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (name.value) {
       localStorage.setItem("name", name.value);
       if (localStorage.getItem("name") !== null) {
+        window.location.href ='/chatroom';
       }
     } else {
       console.log("no");

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat Chat Chat it up!</title>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="{{ url_for('static', filename='chat.js') }}"></script>
+    </head>
+    <body>
+        <ul id="chatall"></ul>
+        <form>
+            <label for="chat">Message</label>
+            <input id="chat" name="chat" placeholder="text">
+            <button id="submitChat" data-text>enter</button>
+        </form>
+
+    </body>
+</html>
