@@ -6,8 +6,17 @@
         <script src="{{ url_for('static', filename='chat.js') }}"></script>
     </head>
     <body>
+
+        Channels: 
+        {{channels}}
         <div id="chatall"></div>
         <form id="nameormsg"></form>
+
+        <form>
+            <label for="channelAdd">Add Channel</label>
+            <input id="channelAdd" name="channelAdd" placeholder="channel">
+            <button id="submitChannel">add channel</button>
+        </form>
 
     </body>
 </html>

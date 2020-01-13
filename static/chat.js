@@ -54,11 +54,17 @@ document.addEventListener("DOMContentLoaded", () => {
         msg.value = "";
       };
     }
+
+    // document.getElementById('submitChannel').onclick = function(e) {
+    //   const chName = document.getElementById('channelAdd');
+    //   e.preventDefault();
+    //   socket.emit('submit channel', {channel: chName.value});
+    //   chName.value = "";
+    // }
   });
 
   // When a new vote is announced, add to the unordered list
   socket.on("show chat", data => {
-    console.log("received");
     const pi = document.createElement("p");
 
     for (let it of data.message) {
@@ -66,4 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     document.querySelector("#chatall").append(pi);
   });
+
+  // socket.on('show channel', data => {
+  //   console.log(data);
+
+  // })
 });

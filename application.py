@@ -8,8 +8,7 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 chat = []
-names = []
-channels = []
+channels = {"general": []}
 
 # @app.route("/")
 # def index():
@@ -17,14 +16,19 @@ channels = []
 
 @app.route("/")
 def chatroom():
-    print('test')
-    return render_template('chat.html')
+    return render_template('chat.html', channels=channels, chat=chat)
 
 @socketio.on('submit chat')
 def socketChat(data):
     message = data["message"]
     chat.append(message)
-    emit("show chat", {"message": chat}, broadcast=True)
+    emit("show chat", {"message": chat}, channels, broadcast=True)
+
+@socketio.on('submit channel')
+def socketChannel(data):
+    channel = data['channel']
+    print('hello')
+    emit('show channel', {'channel': channel}, channels, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
