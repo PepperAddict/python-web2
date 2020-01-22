@@ -8,8 +8,11 @@
     <body>
 
         Channels: 
-        {{channels}}
+        {% for x in channels %}
+         <p id="channels">{{ x }}</p>
+        {% endfor %}
         <div id="chatall"></div>
+
         <form id="nameormsg"></form>
 
         <form>

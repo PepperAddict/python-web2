@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let name = localStorage.getItem("name");
+  localStorage.setItem("channel", "general")
 
   if (!name) {
     const ele = document.getElementById("nameormsg");
@@ -44,23 +45,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // When connected, configure buttons
   socket.on("connect", () => {
-    // Each button should emit a "submit vote" event
+
+    //Chat
     if (name) {
       document.getElementById("submitChat").onclick = function(e) {
         const msg = document.getElementById("chat");
         e.preventDefault();
         const name = localStorage.getItem("name");
-        socket.emit("submit chat", { message: name + ":" + msg.value });
+        const channel = localStorage.getItem("channel")
+        socket.emit("submit chat", { message: name + ":" + msg.value, channel: channel });
         msg.value = "";
       };
     }
 
-    // document.getElementById('submitChannel').onclick = function(e) {
-    //   const chName = document.getElementById('channelAdd');
-    //   e.preventDefault();
-    //   socket.emit('submit channel', {channel: chName.value});
-    //   chName.value = "";
-    // }
+    //Managing adding a channel
+
+    document.getElementById('submitChannel').onclick = function(e) {
+      const chName = document.getElementById('channelAdd');
+      e.preventDefault();
+      socket.emit('submit channel', {channel: chName.value});
+      chName.value = "";
+    }
   });
 
   // When a new vote is announced, add to the unordered list
@@ -69,12 +74,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let it of data.message) {
       pi.innerHTML = it;
+      console.log(it)
     }
     document.querySelector("#chatall").append(pi);
   });
 
-  // socket.on('show channel', data => {
-  //   console.log(data);
+  socket.on('show channel', data => {
+    console.log(data);
+  })
+  
+  function changechannel(e) {
+    document.querySelectorAll("#channels").forEach(el => {
+      console.dir(el.className)
 
-  // })
+      if (el.className == "active") {
+        el.classList.remove("active")
+      }
+    })
+
+  }
+
+  //when channel is clicked save it to localstorage
+  document.querySelectorAll("#channels").forEach(link => {
+    link.onclick = (e) => {
+      const channelSelected = e.target.innerHTML
+      localStorage.setItem("channel", channelSelected)
+      changechannel(e)
+      e.target.className = "active";
+    }
+
+  })
 });

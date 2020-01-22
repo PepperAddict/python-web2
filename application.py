@@ -22,13 +22,13 @@ def chatroom():
 def socketChat(data):
     message = data["message"]
     chat.append(message)
-    emit("show chat", {"message": chat}, channels, broadcast=True)
+    emit("show chat", {"message": chat}, broadcast=True)
 
 @socketio.on('submit channel')
 def socketChannel(data):
     channel = data['channel']
-    print('hello')
-    emit('show channel', {'channel': channel}, channels, broadcast=True)
+    channels[channel] = []
+    emit('show channel', channels, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
