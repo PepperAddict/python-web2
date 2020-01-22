@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let name = localStorage.getItem("name");
-  localStorage.setItem("channel", "general")
+  localStorage.setItem("channel", "general");
 
   if (!name) {
     const ele = document.getElementById("nameormsg");
@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     buttonOne.innerHTML = "Enter Name";
 
     buttonOne.onclick = function(e) {
-        localStorage.setItem("name", pi.value);
-    }
+      localStorage.setItem("name", pi.value);
+    };
 
     ele.append(labelname);
     ele.append(pi);
@@ -44,64 +44,65 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   // When connected, configure buttons
-  socket.on("connect", () => {
-
+  socket.on("connect", e => {
+    console.log(e);
     //Chat
     if (name) {
       document.getElementById("submitChat").onclick = function(e) {
         const msg = document.getElementById("chat");
         e.preventDefault();
         const name = localStorage.getItem("name");
-        const channel = localStorage.getItem("channel")
-        socket.emit("submit chat", { message: name + ":" + msg.value, channel: channel });
+        const channel = localStorage.getItem("channel");
+        socket.emit("submit chat", {
+          message: name + ":" + msg.value,
+          channel: channel
+        });
         msg.value = "";
       };
     }
 
     //Managing adding a channel
 
-    document.getElementById('submitChannel').onclick = function(e) {
-      const chName = document.getElementById('channelAdd');
+    document.getElementById("submitChannel").onclick = function(e) {
+      const chName = document.getElementById("channelAdd");
       e.preventDefault();
-      socket.emit('submit channel', {channel: chName.value});
+      socket.emit("submit channel", { channel: chName.value });
       chName.value = "";
-    }
+    };
+
+    //when channel is clicked save it to localstorage
+    document.querySelectorAll("#channels").forEach(link => {
+      link.onclick = e => {
+        const channelSelected = e.target.innerHTML;
+        localStorage.setItem("channel", channelSelected);
+        changechannel(e);
+        e.target.className = "active";
+        socket.emit("select channel", channelSelected);
+      };
+    });
   });
 
-  // When a new vote is announced, add to the unordered list
+  socket.on("show channel", data => {
+    location.reload();
+  });
+
+  function changechannel(e) {
+    document.querySelectorAll("#channels").forEach(el => {
+      if (el.className == "active") {
+        el.classList.remove("active");
+      }
+    });
+  }
+
+  //show current chat
   socket.on("show chat", data => {
     const pi = document.createElement("p");
-
-    for (let it of data.message) {
+    const channel = localStorage.getItem("channel");
+    console.log(data);
+    for (let it of data[channel]) {
       pi.innerHTML = it;
-      console.log(it)
+      console.log(it);
     }
     document.querySelector("#chatall").append(pi);
   });
-
-  socket.on('show channel', data => {
-    console.log(data);
-  })
-  
-  function changechannel(e) {
-    document.querySelectorAll("#channels").forEach(el => {
-      console.dir(el.className)
-
-      if (el.className == "active") {
-        el.classList.remove("active")
-      }
-    })
-
-  }
-
-  //when channel is clicked save it to localstorage
-  document.querySelectorAll("#channels").forEach(link => {
-    link.onclick = (e) => {
-      const channelSelected = e.target.innerHTML
-      localStorage.setItem("channel", channelSelected)
-      changechannel(e)
-      e.target.className = "active";
-    }
-
-  })
 });

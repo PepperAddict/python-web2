@@ -7,10 +7,21 @@
     </head>
     <body>
 
-        Channels: 
-        {% for x in channels %}
+
+        Channels
+        {% for x in chosen %}
+        
          <p id="channels">{{ x }}</p>
+         
         {% endfor %}
+
+        {% for x in channels %}
+        
+        <p id="chat">{{ x }}</p>
+        
+       {% endfor %}
+
+
         <div id="chatall"></div>
 
         <form id="nameormsg"></form>
