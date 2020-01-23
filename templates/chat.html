@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Chat Chat Chat it up!</title>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-        <script src="{{ url_for('static', filename='chat.js') }}"></script>
-    </head>
-    <body>
+  <head>
+    <title>Chat Chat Chat it up!</title>
+    <script
+      type="text/javascript"
+      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"
+    ></script>
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+  </head>
+  <body>
+    Channels: 
+    <ul>{% for x in channels %}
 
+    <li id="channels">{{ x }}</li>
 
-        Channels
-        {% for x in chosen %}
-        
-         <p id="channels">{{ x }}</p>
-         
-        {% endfor %}
+    {% endfor %} 
+</ul>
+{% for x in chat %}
 
-        {% for x in channels %}
-        
-        <p id="chat">{{ x }}</p>
-        
-       {% endfor %}
+    <p>{{ x }}</p>
 
+    {% endfor %}
 
-        <div id="chatall"></div>
+    <div id="chatall"></div>
 
-        <form id="nameormsg"></form>
+    <form id="nameormsg"></form>
 
-        <form>
-            <label for="channelAdd">Add Channel</label>
-            <input id="channelAdd" name="channelAdd" placeholder="channel">
-            <button id="submitChannel">add channel</button>
-        </form>
-
-    </body>
+    <form>
+      <label for="channelAdd">Add Channel</label>
+      <input id="channelAdd" name="channelAdd" placeholder="channel" />
+      <button id="submitChannel">add channel</button>
+    </form>
+  </body>
 </html>

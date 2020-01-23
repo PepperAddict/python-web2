@@ -1,29 +1,34 @@
 import os
 
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, session
 from flask_socketio import SocketIO, emit
+from flask_session import Session
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-socketio = SocketIO(app)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SESSION_TYPE'] = 'filesystem'
+socketio = SocketIO(app, manage_session=False)
 
-channels = {"general": []}
-chosenChannel = "general"
+channels = {'general': []}
+chosenChannel = 'general'
 
-# @app.route("/")
-# def index():
-#     return render_template('index.html', names=names)
+# Configure session to use filesystem
+app.config['SESSION_PERMANENT'] = False
 
-@app.route("/")
+Session(app)
+
+@app.route('/')
 def chatroom():
-    return render_template('chat.html', chosen=channels, channels=channels[chosenChannel])
+    chan = session.get('channel', 'general')
+    print(chan)
+    return render_template('chat.html', channels=channels, chat=channels[chosenChannel])
 
 @socketio.on('submit chat')
 def socketChat(data):
-    message = data["message"]
-    channel = data["channel"]
+    message = data['message']
+    channel = data['channel']
     channels[channel].append(message)
-    emit("show chat", channels, broadcast=True)
+    emit('show chat', { 'channel': channel, 'message': channels[channel]}, broadcast=True)
 
 @socketio.on('submit channel')
 def socketChannel(data):
@@ -33,10 +38,10 @@ def socketChannel(data):
 
 @socketio.on('select channel')
 def socketSelect(data):
-    chosenChannel = data
-    print(chosenChannel)
-    
-    return redirect('/')
+    session['channel'] = data
+    cha = session.get('channel')
+    print(cha)
+    emit('select channel', cha, broadcast=True)
 
 
 if __name__ == '__main__':

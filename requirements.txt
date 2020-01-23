@@ -1,3 +1,4 @@
 Flask
 Flask-SocketIO
 python-dotenv
+flask_session

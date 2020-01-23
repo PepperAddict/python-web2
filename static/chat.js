@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // When connected, configure buttons
   socket.on("connect", e => {
-    console.log(e);
+
     //Chat
     if (name) {
       document.getElementById("submitChat").onclick = function(e) {
@@ -97,12 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
   //show current chat
   socket.on("show chat", data => {
     const pi = document.createElement("p");
-    const channel = localStorage.getItem("channel");
-    console.log(data);
-    for (let it of data[channel]) {
-      pi.innerHTML = it;
-      console.log(it);
-    }
+    console.log(data)
+
+    // for (let it of data) {
+    //   pi.innerHTML = it;
+    // }
     document.querySelector("#chatall").append(pi);
   });
 });
