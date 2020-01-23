@@ -17,11 +17,12 @@ app.config['SESSION_PERMANENT'] = False
 
 Session(app)
 
+
 @app.route('/')
 def chatroom():
     chan = session.get('channel', 'general')
     print(chan)
-    return render_template('chat.html', channels=channels, chat=channels[chosenChannel])
+    return render_template('chat.html', channels=channels, chat=channels[chan])
 
 @socketio.on('submit chat')
 def socketChat(data):
@@ -40,7 +41,6 @@ def socketChannel(data):
 def socketSelect(data):
     session['channel'] = data
     cha = session.get('channel')
-    print(cha)
     emit('select channel', cha, broadcast=True)
 
 

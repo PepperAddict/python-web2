@@ -33,6 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttonTwo = document.createElement("button");
     buttonTwo.id = "submitChat";
     buttonTwo.innerHTML = "Submit Chat";
+    buttonTwo.onsubmit = (e) => {
+      console.log('whats up')
+    }
 
     ele.append(pi);
     ele.appendChild(buttonTwo);
