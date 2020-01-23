@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   let name = localStorage.getItem("name");
-  localStorage.setItem("channel", "general");
+  const ch = localStorage.getItem('channel')
+  if (!ch) {
+    localStorage.setItem('channel', 'general')
+  }
+  console.log(ch)
 
   if (!name) {
     const ele = document.getElementById("nameormsg");
@@ -48,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // When connected, configure buttons
   socket.on("connect", e => {
+
     //Chat
     if (name) {
       document.getElementById("submitChat").onclick = function(e) {
@@ -94,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   socket.on("show channel", data => {
+    localStorage.setItem("channel", data)
     location.reload();
   });
 
@@ -108,15 +114,16 @@ document.addEventListener("DOMContentLoaded", () => {
   //show current chat
   socket.on("show chat", data => {
     const pi = document.createElement("p");
-    const ti = document.createElement("span");
+    const currentCh = localStorage.getItem('channel')
 
-    for (let it of data.message) {
-      pi.innerHTML = it;
-        console.log(data.time)
-        // ti.innerHTML = data.time;
-        // pi.append(ti);
+    console.log(currentCh)
+    if (data.channel === currentCh ) {
+
+      for (let it of data.message) {
+        pi.innerHTML =  data.channel + ' | ' + it;
+      }
+      document.querySelector("#chatall").append(pi);
     }
-
-    document.querySelector("#chatall").append(pi);
+    
   });
 });

@@ -28,7 +28,7 @@ def socketChat(data):
     message = data['message']
     ti = data["time"]
     chan = session.get('channel', 'general')
-    channels[chan].append(message + ti)
+    channels[chan].append(message + ' | ' + ti)
 
     emit('show chat', { 'channel': chan, 'message': channels[chan], 'time': ti},  broadcast=True)
 
