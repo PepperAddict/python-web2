@@ -9,11 +9,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SESSION_TYPE'] = 'filesystem'
 socketio = SocketIO(app, manage_session=False)
 
-channels = {'general': []}
-chosenChannel = 'general'
+channels = {'general': ['Welcome to Chat Chat Chat it up!']}
 
 # Configure session to use filesystem
-app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_PERMANENT'] = True
 
 Session(app)
 
@@ -27,9 +26,11 @@ def chatroom():
 @socketio.on('submit chat')
 def socketChat(data):
     message = data['message']
-    channel = data['channel']
-    channels[channel].append(message)
-    emit('show chat', { 'channel': channel, 'message': channels[channel]}, broadcast=True)
+    ti = data["time"]
+    chan = session.get('channel', 'general')
+    channels[chan].append(message + ti)
+
+    emit('show chat', { 'channel': chan, 'message': channels[chan], 'time': ti},  broadcast=True)
 
 @socketio.on('submit channel')
 def socketChannel(data):

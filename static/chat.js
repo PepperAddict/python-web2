@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttonTwo = document.createElement("button");
     buttonTwo.id = "submitChat";
     buttonTwo.innerHTML = "Submit Chat";
-    buttonTwo.onsubmit = (e) => {
-      console.log('whats up')
-    }
+    buttonTwo.onsubmit = e => {
+      console.log("whats up");
+    };
 
     ele.append(pi);
     ele.appendChild(buttonTwo);
@@ -48,17 +48,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // When connected, configure buttons
   socket.on("connect", e => {
-
     //Chat
     if (name) {
       document.getElementById("submitChat").onclick = function(e) {
         const msg = document.getElementById("chat");
         e.preventDefault();
         const name = localStorage.getItem("name");
-        const channel = localStorage.getItem("channel");
+
+        var time = new Date();
+        const timeTogether = time.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true
+        });
+
         socket.emit("submit chat", {
-          message: name + ":" + msg.value,
-          channel: channel
+          message: name + ": " + msg.value,
+          time: timeTogether
         });
         msg.value = "";
       };
@@ -80,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("channel", channelSelected);
         changechannel(e);
         e.target.className = "active";
+        window.location.reload();
         socket.emit("select channel", channelSelected);
       };
     });
@@ -100,11 +108,15 @@ document.addEventListener("DOMContentLoaded", () => {
   //show current chat
   socket.on("show chat", data => {
     const pi = document.createElement("p");
-    console.log(data)
+    const ti = document.createElement("span");
 
-    // for (let it of data) {
-    //   pi.innerHTML = it;
-    // }
+    for (let it of data.message) {
+      pi.innerHTML = it;
+        console.log(data.time)
+        // ti.innerHTML = data.time;
+        // pi.append(ti);
+    }
+
     document.querySelector("#chatall").append(pi);
   });
 });
