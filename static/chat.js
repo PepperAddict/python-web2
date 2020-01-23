@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!ch) {
     localStorage.setItem('channel', 'general')
   }
-  console.log(ch)
+
 
   if (!name) {
     const ele = document.getElementById("nameormsg");
@@ -87,14 +87,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //when channel is clicked save it to localstorage
     document.querySelectorAll("#channels").forEach(link => {
-      link.onclick = e => {
-        const channelSelected = e.target.innerHTML;
-        localStorage.setItem("channel", channelSelected);
-        changechannel(e);
-        e.target.className = "active";
-        window.location.reload();
-        socket.emit("select channel", channelSelected);
-      };
+      console.log(link)
+      
+      // link.onclick = e => {
+      //   const channelSelected = e.target.innerHTML;
+      //   localStorage.setItem("channel", channelSelected);
+      //   changechannel(e);
+      //   e.target.className = "active";
+      //   window.location.reload();
+      //   socket.emit("select channel", channelSelected);
+      // };
     });
   });
 

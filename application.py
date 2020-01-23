@@ -37,7 +37,7 @@ def socketChannel(data):
     channel = data['channel']
     session['channel'] = channel
     cha = session.get('channel')
-    channels[channel] = []
+    channels[channel] = ['Welcome to ' + channel + ' channel']
     emit('show channel', cha, broadcast=True)
 
 @socketio.on('select channel')

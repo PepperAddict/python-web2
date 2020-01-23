@@ -1,0 +1,19 @@
+
+.lists {
+    display: flex;
+    list-style: none;
+}
+#channels {
+    padding: 10px;
+}
+
+.channel-Container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.add-channel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

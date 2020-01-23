@@ -7,30 +7,34 @@
       src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"
     ></script>
     <script src="{{ url_for('static', filename='chat.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
   </head>
   <body>
-    Channels: 
-    <ul>{% for x in channels %}
+    <div class="container">
+      <div class="channel-Container">
+        <ul class="lists">
+          <li id="channels">Channels:</li>
+          {% for x in channels %}
 
-    <li id="channels">{{ x }}</li>
+          <li id="channels">{{ x }}</li>
 
-    {% endfor %} 
-</ul>
+          {% endfor %}
+        </ul>
+        <form class="add-channel">
+          <input id="channelAdd" name="channelAdd" placeholder="channel" />
+          <button id="submitChannel">add channel</button>
+        </form>
+      </div>
 
-{% for x in chat %}
+      {% for x in chat %}
 
-    <p>{{ x }}</p>
+      <p>{{ x }}</p>
 
-    {% endfor %}
+      {% endfor %}
 
-    <div id="chatall"></div>
+      <div id="chatall"></div>
 
-    <form id="nameormsg"></form>
-
-    <form>
-      <label for="channelAdd">Add Channel</label>
-      <input id="channelAdd" name="channelAdd" placeholder="channel" />
-      <button id="submitChannel">add channel</button>
-    </form>
+      <form id="nameormsg"></form>
+    </div>
   </body>
 </html>
