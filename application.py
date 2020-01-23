@@ -34,8 +34,10 @@ def socketChat(data):
 @socketio.on('submit channel')
 def socketChannel(data):
     channel = data['channel']
+    session['channel'] = channel
+    cha = session.get('channel')
     channels[channel] = []
-    emit('show channel', channels, broadcast=True)
+    emit('show channel', cha, broadcast=True)
 
 @socketio.on('select channel')
 def socketSelect(data):
