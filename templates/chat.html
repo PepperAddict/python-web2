@@ -26,13 +26,15 @@
         </form>
       </div>
 
-      {% for x in chat %}
 
-      <p>{{ x }}</p>
 
-      {% endfor %}
+      <div id="chatall">
+        {% for x in chat %}
 
-      <div id="chatall"></div>
+        <p>{{ x }}</p>
+  
+        {% endfor %}
+      </div>
 
       <form id="nameormsg"></form>
     </div>

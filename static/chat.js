@@ -87,16 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //when channel is clicked save it to localstorage
     document.querySelectorAll("#channels").forEach(link => {
-      console.log(link)
+      const chan = localStorage.getItem('channel')
+      console.dir(link.innerHTML + chan)
+      if (link.innerHTML === chan) {
+        link.className = "active"
+      }
       
-      // link.onclick = e => {
-      //   const channelSelected = e.target.innerHTML;
-      //   localStorage.setItem("channel", channelSelected);
-      //   changechannel(e);
-      //   e.target.className = "active";
-      //   window.location.reload();
-      //   socket.emit("select channel", channelSelected);
-      // };
+      link.onclick = e => {
+        const channelSelected = e.target.innerHTML;
+        localStorage.setItem("channel", channelSelected);
+        window.location.reload();
+        socket.emit("select channel", channelSelected);
+      };
     });
   });
 
@@ -105,26 +107,21 @@ document.addEventListener("DOMContentLoaded", () => {
     location.reload();
   });
 
-  function changechannel(e) {
-    document.querySelectorAll("#channels").forEach(el => {
-      if (el.className == "active") {
-        el.classList.remove("active");
-      }
-    });
-  }
 
   //show current chat
   socket.on("show chat", data => {
     const pi = document.createElement("p");
+    const chatall = document.querySelector("#chatall");
     const currentCh = localStorage.getItem('channel')
 
-    console.log(currentCh)
     if (data.channel === currentCh ) {
 
       for (let it of data.message) {
-        pi.innerHTML =  data.channel + ' | ' + it;
+        pi.innerHTML =  it;
       }
-      document.querySelector("#chatall").append(pi);
+      
+      chatall.append(pi);
+      chatall.scrollTop = chatall.scrollHeight;
     }
     
   });
